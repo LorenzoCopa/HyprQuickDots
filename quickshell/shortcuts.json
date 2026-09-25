@@ -1,0 +1,389 @@
+{
+  "items": [
+    {
+      "keys": "SUPER + Q",
+      "desc": "Menú de acceso rápido",
+      "cat": "Quickshell"
+    },
+    {
+      "keys": "SUPER + D",
+      "desc": "Dictado por voz (grabar/transcribir)",
+      "cat": "Quickshell"
+    },
+    {
+      "keys": "Escape",
+      "desc": "Cancelar dictado o comando de voz",
+      "cat": "Quickshell"
+    },
+    {
+      "keys": "SUPER + A",
+      "desc": "Comando de voz (abrir apps, controlar música/volumen)",
+      "cat": "Quickshell"
+    },
+    {
+      "keys": "SUPER + RETURN",
+      "desc": "Abrir terminal",
+      "cat": "General"
+    },
+    {
+      "keys": "SUPER + X",
+      "desc": "Cerrar la ventana activa (o su panel de Quickshell)",
+      "cat": "Ventanas"
+    },
+    {
+      "keys": "SUPER + E",
+      "desc": "Abrir el gestor de archivos",
+      "cat": "General"
+    },
+    {
+      "keys": "SUPER + F",
+      "desc": "Alternar ventana flotante (centrada)",
+      "cat": "Ventanas"
+    },
+    {
+      "keys": "SUPER + GRAVE",
+      "desc": "Alternar entre ventanas flotantes",
+      "cat": "Ventanas"
+    },
+    {
+      "keys": "SUPER + R",
+      "desc": "Abrir el menú de aplicaciones",
+      "cat": "General"
+    },
+    {
+      "keys": "SUPER + P",
+      "desc": "Alternar pseudo-tilado (pseudotile)",
+      "cat": "Ventanas"
+    },
+    {
+      "keys": "SUPER + left",
+      "desc": "Mover el foco: izquierda",
+      "cat": "Navegación"
+    },
+    {
+      "keys": "SUPER + right",
+      "desc": "Mover el foco: derecha",
+      "cat": "Navegación"
+    },
+    {
+      "keys": "SUPER + up",
+      "desc": "Mover el foco: arriba",
+      "cat": "Navegación"
+    },
+    {
+      "keys": "SUPER + down",
+      "desc": "Mover el foco: abajo",
+      "cat": "Navegación"
+    },
+    {
+      "keys": "SUPER + 1",
+      "desc": "Ir al escritorio 1",
+      "cat": "Escritorios"
+    },
+    {
+      "keys": "SUPER + SHIFT + 1",
+      "desc": "Mover la ventana al escritorio 1",
+      "cat": "Escritorios"
+    },
+    {
+      "keys": "SUPER + 2",
+      "desc": "Ir al escritorio 2",
+      "cat": "Escritorios"
+    },
+    {
+      "keys": "SUPER + SHIFT + 2",
+      "desc": "Mover la ventana al escritorio 2",
+      "cat": "Escritorios"
+    },
+    {
+      "keys": "SUPER + 3",
+      "desc": "Ir al escritorio 3",
+      "cat": "Escritorios"
+    },
+    {
+      "keys": "SUPER + SHIFT + 3",
+      "desc": "Mover la ventana al escritorio 3",
+      "cat": "Escritorios"
+    },
+    {
+      "keys": "SUPER + 4",
+      "desc": "Ir al escritorio 4",
+      "cat": "Escritorios"
+    },
+    {
+      "keys": "SUPER + SHIFT + 4",
+      "desc": "Mover la ventana al escritorio 4",
+      "cat": "Escritorios"
+    },
+    {
+      "keys": "SUPER + 5",
+      "desc": "Ir al escritorio 5",
+      "cat": "Escritorios"
+    },
+    {
+      "keys": "SUPER + SHIFT + 5",
+      "desc": "Mover la ventana al escritorio 5",
+      "cat": "Escritorios"
+    },
+    {
+      "keys": "SUPER + 6",
+      "desc": "Ir al escritorio 6",
+      "cat": "Escritorios"
+    },
+    {
+      "keys": "SUPER + SHIFT + 6",
+      "desc": "Mover la ventana al escritorio 6",
+      "cat": "Escritorios"
+    },
+    {
+      "keys": "SUPER + 7",
+      "desc": "Ir al escritorio 7",
+      "cat": "Escritorios"
+    },
+    {
+      "keys": "SUPER + SHIFT + 7",
+      "desc": "Mover la ventana al escritorio 7",
+      "cat": "Escritorios"
+    },
+    {
+      "keys": "SUPER + 8",
+      "desc": "Ir al escritorio 8",
+      "cat": "Escritorios"
+    },
+    {
+      "keys": "SUPER + SHIFT + 8",
+      "desc": "Mover la ventana al escritorio 8",
+      "cat": "Escritorios"
+    },
+    {
+      "keys": "SUPER + 9",
+      "desc": "Ir al escritorio 9",
+      "cat": "Escritorios"
+    },
+    {
+      "keys": "SUPER + SHIFT + 9",
+      "desc": "Mover la ventana al escritorio 9",
+      "cat": "Escritorios"
+    },
+    {
+      "keys": "SUPER + 0",
+      "desc": "Ir al escritorio 10",
+      "cat": "Escritorios"
+    },
+    {
+      "keys": "SUPER + SHIFT + 0",
+      "desc": "Mover la ventana al escritorio 10",
+      "cat": "Escritorios"
+    },
+    {
+      "keys": "SUPER + S",
+      "desc": "Mostrar/ocultar el scratchpad (espacio mágico)",
+      "cat": "Escritorios"
+    },
+    {
+      "keys": "SUPER + SHIFT + S",
+      "desc": "Mover la ventana al scratchpad",
+      "cat": "Escritorios"
+    },
+    {
+      "keys": "SUPER + mouse_down",
+      "desc": "Cambiar al escritorio siguiente (rueda)",
+      "cat": "Escritorios"
+    },
+    {
+      "keys": "SUPER + mouse_up",
+      "desc": "Cambiar al escritorio anterior (rueda)",
+      "cat": "Escritorios"
+    },
+    {
+      "keys": "SUPER + mouse:272",
+      "desc": "Mover la ventana con el ratón",
+      "cat": "Ventanas"
+    },
+    {
+      "keys": "SUPER + mouse:273",
+      "desc": "Redimensionar la ventana con el ratón",
+      "cat": "Ventanas"
+    },
+    {
+      "keys": "XF86AudioRaiseVolume",
+      "desc": "Subir volumen",
+      "cat": "Sistema"
+    },
+    {
+      "keys": "XF86AudioLowerVolume",
+      "desc": "Bajar volumen",
+      "cat": "Sistema"
+    },
+    {
+      "keys": "XF86AudioMute",
+      "desc": "Silenciar el audio",
+      "cat": "Sistema"
+    },
+    {
+      "keys": "XF86AudioMicMute",
+      "desc": "Silenciar el micrófono",
+      "cat": "Sistema"
+    },
+    {
+      "keys": "XF86MonBrightnessUp",
+      "desc": "Subir el brillo de la pantalla",
+      "cat": "Sistema"
+    },
+    {
+      "keys": "XF86MonBrightnessDown",
+      "desc": "Bajar el brillo de la pantalla",
+      "cat": "Sistema"
+    },
+    {
+      "keys": "XF86AudioNext",
+      "desc": "Siguiente canción",
+      "cat": "Sistema"
+    },
+    {
+      "keys": "XF86AudioPause",
+      "desc": "Reproducir / pausar",
+      "cat": "Sistema"
+    },
+    {
+      "keys": "XF86AudioPlay",
+      "desc": "Reproducir / pausar",
+      "cat": "Sistema"
+    },
+    {
+      "keys": "XF86AudioPrev",
+      "desc": "Canción anterior",
+      "cat": "Sistema"
+    },
+    {
+      "keys": "SUPER + H",
+      "desc": "Navegar el foco (Vim): izquierda",
+      "cat": "Navegación"
+    },
+    {
+      "keys": "SUPER + J",
+      "desc": "Navegar el foco (Vim): abajo",
+      "cat": "Navegación"
+    },
+    {
+      "keys": "SUPER + K",
+      "desc": "Navegar el foco (Vim): arriba",
+      "cat": "Navegación"
+    },
+    {
+      "keys": "SUPER + L",
+      "desc": "Navegar el foco (Vim): derecha",
+      "cat": "Navegación"
+    },
+    {
+      "keys": "SUPER + SHIFT + H",
+      "desc": "Mover la ventana (Vim): izquierda",
+      "cat": "Navegación"
+    },
+    {
+      "keys": "SUPER + SHIFT + J",
+      "desc": "Mover la ventana (Vim): abajo",
+      "cat": "Navegación"
+    },
+    {
+      "keys": "SUPER + SHIFT + K",
+      "desc": "Mover la ventana (Vim): arriba",
+      "cat": "Navegación"
+    },
+    {
+      "keys": "SUPER + SHIFT + L",
+      "desc": "Mover la ventana (Vim): derecha",
+      "cat": "Navegación"
+    },
+    {
+      "keys": "SUPER + M",
+      "desc": "Alternar monocelda en el escritorio activo",
+      "cat": "Ventanas"
+    },
+    {
+      "keys": "SUPER + SHIFT + M",
+      "desc": "Maximizar a pantalla completa",
+      "cat": "Ventanas"
+    },
+    {
+      "keys": "SUPER + SPACE",
+      "desc": "Abrir el launcher de aplicaciones",
+      "cat": "Quickshell"
+    },
+    {
+      "keys": "SUPER + W",
+      "desc": "Cambiar el fondo de pantalla",
+      "cat": "Quickshell"
+    },
+    {
+      "keys": "SUPER + V",
+      "desc": "Abrir el portapapeles",
+      "cat": "Quickshell"
+    },
+    {
+      "keys": "SUPER + COMMA",
+      "desc": "Abrir la configuración",
+      "cat": "Quickshell"
+    },
+    {
+      "keys": "SUPER + SHIFT + X",
+      "desc": "Menú de apagado / bloquear",
+      "cat": "Sistema"
+    },
+    {
+      "keys": "SUPER + Print",
+      "desc": "Menú de captura de pantalla",
+      "cat": "Capturas"
+    },
+    {
+      "keys": "Print",
+      "desc": "Captura de pantalla completa",
+      "cat": "Capturas"
+    },
+    {
+      "keys": "SUPER + SHIFT + Print",
+      "desc": "Captura de una región",
+      "cat": "Capturas"
+    },
+    {
+      "keys": "SHIFT + Print",
+      "desc": "Captura de una región",
+      "cat": "Capturas"
+    },
+    {
+      "keys": "SUPER + CTRL + Print",
+      "desc": "Captura de la ventana enfocada",
+      "cat": "Capturas"
+    },
+    {
+      "keys": "SUPER + ALT + Print",
+      "desc": "Captura de la ventana activa",
+      "cat": "Capturas"
+    },
+    {
+      "keys": "SUPER + SHIFT + CTRL + Print",
+      "desc": "Captura de la ventana bajo el cursor",
+      "cat": "Capturas"
+    },
+    {
+      "keys": "SUPER + SHIFT + P",
+      "desc": "Copiar un color de la pantalla",
+      "cat": "Quickshell"
+    },
+    {
+      "keys": "CTRL + SHIFT + mouse_down",
+      "desc": "Alejar (zoom)",
+      "cat": "Zoom"
+    },
+    {
+      "keys": "CTRL + SHIFT + mouse_up",
+      "desc": "Acercar (zoom)",
+      "cat": "Zoom"
+    },
+    {
+      "keys": "3 dedos horizontal",
+      "desc": "Cambiar de escritorio",
+      "cat": "Gestos"
+    }
+  ]
+}

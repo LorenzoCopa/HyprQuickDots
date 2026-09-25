@@ -1,0 +1,4 @@
+-- System Settings window rules
+-- SIN regla de ventana: la Configuración se abre EN MOSAICO como una
+-- app cualquiera (antes flotaba centrada). No necesita stay_focused ni
+-- FocusGrab; se cierra con ESC o SUPER+X (QS_CLOSE_ROUTES).

@@ -1,0 +1,12 @@
+SettingsWindow SettingsWindow.qml
+ThemeSection ThemeSection.qml
+BarSection BarSection.qml
+PowerSection PowerSection.qml
+EnergySection EnergySection.qml
+LightSection LightSection.qml
+BluetoothSection BluetoothSection.qml
+MicSection MicSection.qml
+AudioSection AudioSection.qml
+DictationSection DictationSection.qml
+AppsSection AppsSection.qml
+ShortcutsSection ShortcutsSection.qml

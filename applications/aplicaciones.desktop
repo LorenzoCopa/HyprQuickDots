@@ -1,0 +1,11 @@
+[Desktop Entry]
+Type=Application
+Name=Aplicaciones
+Name[es]=Aplicaciones
+GenericName=App Browser
+GenericName[es]=Navegador de aplicaciones
+Comment=Abrir el navegador de aplicaciones por categorías (Quickshell)
+Exec=qs ipc call appbrowser toggle
+Icon=system-software-install
+Terminal=false
+Categories=System;Utility;

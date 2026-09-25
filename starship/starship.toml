@@ -1,0 +1,33 @@
+# Evergarden palette — https://omarchytheme.com/themes/evergarden/
+add_newline = false
+
+format = """
+$username\
+$directory\
+$git_branch\
+$git_status\
+$line_break\
+$character"""
+
+[username]
+show_always = true
+format = "[](fg:#96b4aa)"
+
+[directory]
+format = " [$path](fg:#cbe3b3)"
+
+[git_branch]
+format = " [$symbol$branch](fg:#b3e6db)"
+
+[git_status]
+format = " [$all_status$ahead_behind](fg:#b2caed)"
+
+# si agregamos el fill en el futuro, debe estar a lado de git_status
+# $git_status $fill\
+# [fill]
+# symbol = "─"
+# style = "bold #313b40"
+
+[character]
+success_symbol = "[➜](bold #b3e6db)"
+error_symbol = "[➜](bold #f57f82)"

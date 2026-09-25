@@ -1,0 +1,39 @@
+# ============================================
+# BACKENDS Y RENDIMIENTO (Wayland)
+# ============================================
+
+# GTK - Usar Wayland como backend
+export GDK_BACKEND="wayland,x11,*"
+
+# Qt - Usar Wayland con fallback a X11
+# xdgdesktopportal: lee el color-scheme del xdg-desktop-portal (gsettings)
+# para que las apps Qt detecten el modo oscuro del sistema (QStyleHints).
+# A diferencia de qt6ct, no usa paleta personalizada: las apps toman el
+# modo oscuro del sistema directamente y cambian en vivo al alternarlo.
+export QT_QPA_PLATFORM="wayland;xcb"
+export QT_AUTO_SCREEN_SCALE_FACTOR="1"
+export QT_WAYLAND_DISABLE_WINDOWDECORATION="1"
+export QT_QPA_PLATFORMTHEME="xdgdesktopportal"
+
+# SDL2 - Usar Wayland en juegos/apps SDL
+export SDL_VIDEODRIVER="wayland"
+
+# Clutter - Usar Wayland en apps Clutter
+export CLUTTER_BACKEND="wayland"
+
+# ============================================
+# XCURSOR (tamaño y tema)
+# ============================================
+
+# export XCURSOR_THEME="Adwaita"  # Cambia por tu tema favorito
+# export XCURSOR_SIZE=24
+
+# ============================================
+# OPCIONALES (descomenta si las necesitas)
+# ============================================
+
+# Para Electron/Chromium en Wayland
+# export ELECTRON_ENABLE_WAYLAND=1
+
+# Para Firefox en Wayland
+# export MOZ_ENABLE_WAYLAND=1
