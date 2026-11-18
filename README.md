@@ -135,7 +135,7 @@ Diferencias con `install.sh`:
 | 9 | **Portapapeles** | `cliphist wl-clipboard` |
 | 10 | **Wallpaper** | `awww` + habilita `awww.service` |
 | 11 | **Sistema** | `hyprsunset brightnessctl lm_sensors power-profiles-daemon` |
-| 12 | **Dictado (whisper)** | `whisper-cpp ggml ggml-cpu ggml-vulkan vulkan-icd-loader ffmpeg` + elección **interactiva del modelo** |
+| 12 | **Dictado (whisper)** | `whisper-cpp ggml ggml-vulkan vulkan-icd-loader ffmpeg` + elección **interactiva del modelo** (`ggml-cpu` lo provee `ggml`) |
 | 13 | **Gaming (opcional)** | `cachyos-gaming-meta steam` — pregunta antes (varios GB) |
 | 14 | **Servicios systemd** | Instala y habilita `quickshell.service` + `awww.service` |
 | 15 | **Symlinks** | Ejecuta `setup.sh` (enlaza config + aplicaciones) |
@@ -208,8 +208,8 @@ El buscador de atajos (Configuración → **Atajos**) siempre muestra los binds 
 
 Detalles completos en [`tutorial/dictado.md`](tutorial/dictado.md). Resumen:
 
-- **Paquetes**: `whisper-cpp ggml ggml-cpu ggml-vulkan vulkan-icd-loader ffmpeg`.
-- **IMPORTANTE** — En `ggml` 0.20+ los backends viven en paquetes propios: **`ggml-cpu` y `ggml-vulkan` son obligatorios** o `whisper-cli` hace abort al cargar el modelo (`ggml_backend_dev_backend_reg`, busca `/usr/lib/ggml` que no existe).
+- **Paquetes**: `whisper-cpp ggml ggml-vulkan vulkan-icd-loader ffmpeg`. (`ggml-cpu` no es un paquete aparte: lo **provee** `ggml`.)
+- **IMPORTANTE** — En `ggml` 0.20+ los backends viven en `/usr/lib/ggml/`. `ggml` ya trae el backend CPU, pero el de **GPU va en `ggml-vulkan`** (`libggml-vulkan.so`). Sin ese paquete `whisper-cli` funciona, pero cae a CPU y va mucho más lento aunque tengas GPU.
 - **Modelo** (interactivo en el instalador, o manual):
 
 ```bash
@@ -239,8 +239,8 @@ Ver `AGENTS.md` para la documentación arquitectónica extensa (widgets, dictado
 
 | Síntoma | Causa / solución |
 |---|---|
-| `whisper-cli` hace **abort** al transcribir | Falta backend ggml. Instala `ggml-cpu` + `ggml-vulkan` (ver [dictado](tutorial/dictado.md)) |
-| El dictado va lento | Sin Vulkan cae a CPU: `vulkaninfo --summary \| grep -A3 "GPU[0-9]"` |
+| `whisper-cli` hace **abort** al transcribir | Falta el backend de ggml. Reinstala `ggml` (CPU) y/o `ggml-vulkan` (GPU) — ver [dictado](tutorial/dictado.md) |
+| El dictado va lento | Sin GPU cae a CPU: comprueba `vulkaninfo --summary \| grep -A3 "GPU[0-9]"` **y** `ls -l /usr/lib/ggml/libggml-vulkan.so` |
 | `qs` / `quickshell` no en PATH | Reinicia la sesión. Confirma que el paquete de repos instaló `/usr/bin/qs` |
 | La barra no aparece / QS no arranca | `systemctl --user status quickshell` y `qs log` |
 | El Atajos no se actualiza | `hyprctl reload` (regenera `quickshell/shortcuts.json`) |

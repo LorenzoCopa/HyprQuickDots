@@ -361,18 +361,28 @@ step_dictado() {
 	)
 	pac_install "${pkgs_pac[@]}"
 
-	# IMPORTANTE — gotcha ggml: si el usuario usa ggml 0.20+ los backends
-	# ggml-cpu/ggml-vulkan son obligatorios (ver dictado.md). Ya los instalamos.
+	# IMPORTANTE — gotcha ggml: el paquete ggml ya provee el backend CPU
+	# (ggml-cpu); el backend GPU va aparte en ggml-vulkan. Sin este último
+	# whisper funciona pero usa CPU (ver dictado.md). Ya los instalamos.
 
-	# Verificar Vulkan (opcional)
+	# Verificar el backend Vulkan de ggml: sin libggml-vulkan.so whisper
+	# arranca igual, pero cae a CPU (mucho más lento).
+	if [ -f /usr/lib/ggml/libggml-vulkan.so ]; then
+		ok "Backend Vulkan de ggml presente (libggml-vulkan.so)"
+	else
+		warn "Falta /usr/lib/ggml/libggml-vulkan.so: el dictado usará CPU (más lento)."
+		warn "Instálalo con: sudo pacman -S ggml-vulkan"
+	fi
+
+	# Verificar que hay un dispositivo Vulkan real (driver gráfico)
 	if command -v vulkaninfo >/dev/null 2>&1; then
 		if vulkaninfo --summary >/dev/null 2>&1; then
-			ok "Dispositivo Vulkan detectado (el dictado usará GPU)"
+			ok "Dispositivo Vulkan detectado"
 		else
 			warn "No se detectó dispositivo Vulkan; whisper-cli usará CPU (más lento)."
 		fi
 	else
-		warn "vulkaninfo no presente (parte de vulkan-tools); no se pudo verificar GPU."
+		warn "vulkaninfo no presente (parte de vulkan-tools); no se pudo verificar la GPU."
 	fi
 
 	# Comprobar binario whisper-cli

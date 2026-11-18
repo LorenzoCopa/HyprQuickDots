@@ -36,7 +36,7 @@ por las secciones del instalador. Sirve para:
 | `pipewire-pulse` | Compatibilidad PulseAudio | Explícito |
 | `pipewire-alsa` | Salida ALSA vía PipeWire | Explícito |
 | `wireplumber` | Gestión de sesión/volúmenes (`wpctl`) | Explícito |
-| `playerctl` | Controles multimedia (teclas XF86, `MediaPanel`) | Explícito |
+| `playerctl` | Teclas multimedia del teclado (XF86Audio*). Los widgets MPRIS no lo necesitan | Explícito |
 | `bluez` | Pila Bluetooth | Explícito |
 | `bluez-utils` | `bluetoothctl` (vincular dispositivos) | Explícito |
 | `networkmanager` | Red (widget de red del QuickAccess) | Explícito |
@@ -116,14 +116,17 @@ por las secciones del instalador. Sirve para:
 | Paquete | Para qué | Origen |
 |---|---|---|
 | `whisper-cpp` | `whisper-cli` (transcripción) | Explícito |
-| `ggml` | Backend base de whisper.cpp | Explícito |
-| `ggml-cpu` | Backend CPU (obligatorio en ggml ≥0.20) | Explícito |
-| `ggml-vulkan` | Backend GPU Vulkan (obligatorio en ggml ≥0.20) | Explícito |
+| `ggml` | Backend base de whisper.cpp. **Provee `ggml-cpu`** (en pacman no existe un paquete `ggml-cpu` aparte) | Explícito |
+| `ggml-vulkan` | Backend GPU Vulkan (`/usr/lib/ggml/libggml-vulkan.so`). **Sin él whisper usa el CPU aunque tengas GPU** | Explícito |
 | `vulkan-icd-loader` | Carga de drivers Vulkan | Dependencia |
 | `ffmpeg` | Recorte de silencio del WAV grabado (dictado/voicecmd) | Dependencia |
 
 > El **modelo** de whisper NO es un paquete: se descarga de Hugging Face a
 > `~/.local/share/dictation/models/` (el instalador lo elige interactivamente).
+>
+> `ggml-vulkan` es la pieza que decide si el dictado va por GPU o por CPU. Si
+> falta, `whisper-cli` arranca sin error pero carga solo el backend CPU (muy
+> lento). El verificador del shell lo avisa como **“Dictado (GPU Vulkan)”**.
 
 ## 10. Gaming — opcional
 
@@ -137,31 +140,37 @@ por las secciones del instalador. Sirve para:
 ## Runtime — verificador de dependencias (quickshell/deps)
 
 El shell comprueba al arrancar (y bajo demanda con `qs ipc call deps check`, o
-con el botón **Reintentar** del aviso) que existen los binarios de cada
-sección. Si falta alguno, `DepsToast` muestra un aviso con el comando de
-instalación exacto en lugar de fallar en silencio.
+con el botón **Reintentar** del aviso) que existen los binarios y archivos de
+cada sección. Si falta alguno, `DepsToast` muestra un aviso con el comando de
+instalación exacto en lugar de fallar en silencio. La lista admite `bin`
+(ejecutable en `PATH`) y `file` (ruta absoluta, para dependencias que no son
+binarios; p. ej. el backend Vulkan de ggml).
 
 La **fuente de verdad** de la lista es `quickshell/deps/DependencyCheck.qml`
 — mantener en sync con esta tabla y con `install.sh`.
 
-| Sección | Binarios que comprueba | Comando de instalación |
+| Sección | Binarios/archivos que comprueba | Comando de instalación |
 |---|---|---|
 | Capturas de pantalla | `hyprshot`, `grim`, `slurp` | `sudo pacman -S hyprshot grim slurp` |
 | Selector de color | `hyprpicker` | `sudo pacman -S hyprpicker` |
 | Portapapeles | `cliphist`, `wl-copy` | `sudo pacman -S cliphist wl-clipboard` |
 | Fondo de pantalla | `awww` | `sudo pacman -S awww` |
 | Luz nocturna | `hyprsunset`, `python3` (daemon) | `sudo pacman -S hyprsunset python` |
-| Teclas multimedia | `playerctl` | `sudo pacman -S playerctl` |
 | Modo de energía | `powerprofilesctl` | `sudo pacman -S power-profiles-daemon` |
 | Bluetooth | `bluetoothctl` | `sudo pacman -S bluez-utils` |
 | Red | `nmcli` | `sudo pacman -S networkmanager` |
 | Dictado / comandos de voz | `whisper-cli`, `pw-record`, `ffmpeg` | `sudo pacman -S whisper-cpp pipewire-audio ffmpeg` |
+| Dictado (GPU Vulkan) | archivo `/usr/lib/ggml/libggml-vulkan.so` | `sudo pacman -S ggml-vulkan` |
 | Widgets Sistema/GPU | `sensors` | `sudo pacman -S lm_sensors` |
 | Núcleo (Hyprland) | `hyprland` | `sudo pacman -S hyprland` |
 
 > Excepción deliberada: `brightnessctl` NO está en la lista aunque el
 > instalador lo incluya — el brillo tiene fallback a `/sys` en `shell.qml`,
 > así que su ausencia no rompe la feature y no debe mostrar el aviso.
+>
+> `playerctl` tampoco se comprueba: solo lo usan las teclas multimedia
+> (XF86Audio*) de `hyprland.lua`. La UI de música de Quickshell va por MPRIS
+> (D-Bus) y funciona sin él, así que su ausencia no rompe ninguna feature.
 
 ---
 
@@ -215,7 +224,7 @@ sudo pacman -S --needed awww
 sudo pacman -S --needed hyprsunset brightnessctl lm_sensors power-profiles-daemon
 
 # 9. Dictado (opcional)
-sudo pacman -S --needed whisper-cpp ggml ggml-cpu ggml-vulkan vulkan-icd-loader ffmpeg
+sudo pacman -S --needed whisper-cpp ggml ggml-vulkan vulkan-icd-loader ffmpeg
 
 # 10. Gaming (opcional)
 sudo pacman -S --needed cachyos-gaming-meta steam

@@ -1,6 +1,6 @@
 {
     "lang": "es",
-    "modelPath": "~/.local/share/dictation/models/ggml-large-v3-turbo-q5_0.bin",
+    "modelPath": "~/.local/share/dictation/models/ggml-large-v3-turbo-q8_0.bin",
     "pasteFocused": true,
     "soundOnFinish": true,
     "trimSilence": true

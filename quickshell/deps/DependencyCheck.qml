@@ -13,8 +13,10 @@ import Quickshell.Io
 Scope {
     id: root
 
-    // bin → { pkg, feats }: binario a comprobar, paquete pacman que lo trae
-    // y apartado(s) del shell que lo necesita (texto ES para el aviso).
+    // bin/archivo → { pkg, feats }: binario (bin) o archivo (file) a
+    // comprobar, paquete pacman que lo trae y apartado(s) del shell que lo
+    // necesita (texto ES para el aviso). Se usa `file` para dependencias que
+    // no son un ejecutable en PATH, como el backend Vulkan de ggml.
     // Mantener en sync con PACKAGES.md / install.sh.
     property var deps: [
         { bin: "hyprshot",         pkg: "hyprshot",              feats: "Capturas de pantalla" },
@@ -28,11 +30,16 @@ Scope {
         // Nota: brightnessctl NO está aqui a propósito: el brillo tiene
         // fallback a /sys en shell.qml (brightnessctl ... || cat /sys/...),
         // asi que su ausencia no rompe la feature y no debe avisar.
-        { bin: "playerctl",        pkg: "playerctl",             feats: "Teclas multimedia" },
+        // playerctl tampoco se comprueba: solo lo usan las teclas
+        // multimedia (XF86Audio*). Los widgets MPRIS de Quickshell van por
+        // D-Bus y funcionan sin él, así que no debe avisar.
         { bin: "powerprofilesctl", pkg: "power-profiles-daemon", feats: "Modo de energía" },
         { bin: "bluetoothctl",     pkg: "bluez-utils",           feats: "Bluetooth" },
         { bin: "nmcli",            pkg: "networkmanager",        feats: "Red" },
         { bin: "whisper-cli",      pkg: "whisper-cpp",           feats: "Dictado / comandos de voz" },
+        // Sin este plugin whisper-cli funciona, pero cae a CPU (mucho más
+        // lento). No es un binario: se comprueba el archivo del backend.
+        { file: "/usr/lib/ggml/libggml-vulkan.so", pkg: "ggml-vulkan", feats: "Dictado (GPU Vulkan)" },
         { bin: "pw-record",        pkg: "pipewire-audio",        feats: "Dictado (grabación)" },
         { bin: "ffmpeg",           pkg: "ffmpeg",                feats: "Dictado (recorte)" },
         { bin: "sensors",          pkg: "lm_sensors",            feats: "Widgets Sistema/GPU" },
@@ -56,20 +63,28 @@ Scope {
     // `isPresent`, no se observa con bindings (asignar claves no notifica).
     property var _present: ({})
 
-    // ¿Existe el binario? Síncrono, válido tras el primer check() completo.
-    function isPresent(bin: string): bool {
-        return root._present[bin] === true;
+    // Clave interna de una dependencia: el binario o, si no hay, la ruta
+    // del archivo. Debe ser única dentro de `deps`.
+    function _key(d) {
+        return d.file ? d.file : d.bin;
+    }
+
+    // ¿Existe el binario/archivo? Síncrono, válido tras el primer check().
+    function isPresent(key: string): bool {
+        return root._present[key] === true;
     }
 
     // Chequeo completo (arranque, `qs ipc call deps check`, botón
-    // "Reintentar"): comprueba TODOS los binarios en un único proceso y
+    // "Reintentar"): comprueba TODAS las dependencias en un único proceso y
     // emite `checked` al terminar.
     function check(): void {
         if (checkProc.running) return;
         const cmds = [];
         for (let i = 0; i < root.deps.length; i++) {
             const d = root.deps[i];
-            cmds.push("command -v " + d.bin + " >/dev/null 2>&1 && echo YES::" + d.bin + " || echo NO::" + d.bin);
+            const key = root._key(d);
+            const probe = d.file ? "test -f " + d.file : "command -v " + d.bin;
+            cmds.push(probe + " >/dev/null 2>&1 && echo YES::" + key + " || echo NO::" + key);
         }
         checkProc.command = ["sh", "-c", cmds.join("; ")];
         checkProc.running = true;
@@ -90,7 +105,8 @@ Scope {
         const out = [];
         for (let i = 0; i < root.deps.length; i++) {
             const d = root.deps[i];
-            if (bins.indexOf(d.bin) >= 0 && !root.isPresent(d.bin)) out.push(d);
+            const key = root._key(d);
+            if (bins.indexOf(key) >= 0 && !root.isPresent(key)) out.push(d);
         }
         return out;
     }
@@ -110,7 +126,7 @@ Scope {
                 const miss = [];
                 for (let j = 0; j < root.deps.length; j++) {
                     const d = root.deps[j];
-                    if (root._present[d.bin] !== true) miss.push(d);
+                    if (root._present[root._key(d)] !== true) miss.push(d);
                 }
                 root.missing = miss;
                 root.checked();

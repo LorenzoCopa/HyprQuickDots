@@ -132,6 +132,13 @@ pac_install quickshell
 if "$DO_WHISPER"; then
 	info "Instalando whisper (dictado por voz)..."
 	pac_install whisper-cpp ggml ggml-cpu ggml-vulkan vulkan-icd-loader ffmpeg
+
+	# Sin libggml-vulkan.so whisper funciona, pero cae a CPU (más lento).
+	if [ -f /usr/lib/ggml/libggml-vulkan.so ]; then
+		ok "Backend Vulkan de ggml presente (dictado con GPU)"
+	else
+		warn "Falta ggml-vulkan: el dictado usará CPU (más lento)."
+	fi
 else
 	warn "--no-whisper: no se instala whisper ni el modelo."
 fi

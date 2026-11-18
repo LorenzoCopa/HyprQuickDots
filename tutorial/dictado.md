@@ -9,22 +9,22 @@ y descargar el modelo.
 Las más son del repositorio principal de Arch (packages son de 2026):
 
 ```bash
-sudo pacman -S whisper-cpp ggml ggml-cpu ggml-vulkan vulkan-icd-loader ffmpeg wl-clipboard
+sudo pacman -S whisper-cpp ggml ggml-vulkan vulkan-icd-loader ffmpeg wl-clipboard
 ```
 
 > **OJO con `ggml` 0.20**: desde esa versión Arch/CachyOS **separó los backends en
-> paquetes propios**. El paquete base `ggml` solo instala `libggml-base` y
-> `libggml` — **sin los plugins de backend**, que ahora viven en `/usr/lib/ggml/`
-> y los aportan `ggml-cpu` (libggml-cpu-*.so) y `ggml-vulkan`
-> (libggml-vulkan.so). Si solo instalas `ggml`, `whisper-cli` hace abort
-> (`ggml_abort` en `ggml_backend_dev_backend_reg`) justo al iniciar el modelo y
-> el dictado no transcribe. **`ggml-cpu` y `ggml-vulkan` son obligatorios.**
+> paquetes propios**. El paquete base `ggml` instala `libggml-base`, `libggml`
+> y el backend CPU (`libggml-cpu-*.so`; `ggml` **provee** `ggml-cpu`, por eso
+> `pacman -Q ggml-cpu` responde `ggml`). El backend GPU va aparte en
+> `ggml-vulkan` (`/usr/lib/ggml/libggml-vulkan.so`). Si falta `ggml-vulkan`,
+> `whisper-cli` no falla: arranca con **solo el backend CPU** y el dictado va
+> mucho más lento aunque tengas una GPU compatible.
 
 Si `whisper-cpp`/`ggml` no están en tu mirror, vienen de:
 - `whisper-cpp` → AUR (paquete `whisper-cpp` o el `whisper.cpp-bin` de flathub/otro)
-- `ggml`/`ggml-cpu`/`ggml-vulkan` → AUR (necesarios con soporte Vulkan, p. ej.
-  `ggml-rosa`/`ggml` con la variante `vulkan`; asegúrate de que el paquete
-  incluya los plugins en `/usr/lib/ggml/`)
+- `ggml`/`ggml-vulkan` → AUR (con soporte Vulkan, p. ej. `ggml-rosa`/`ggml`
+  con la variante `vulkan`; asegúrate de que el paquete incluya los plugins
+  en `/usr/lib/ggml/`)
 - `vulkan-icd-loader` → extra
 
 Cosas que **ya** se asumen del entorno y no hay que re-instalar:
@@ -32,14 +32,30 @@ Cosas que **ya** se asumen del entorno y no hay que re-instalar:
 - `hyprctl` (parte de Hyprland)
 - El pipeline de portapapeles (`wl-copy` viene con `wl-clipboard`)
 
-## 2. Verificar GPU Vulkan (opcional pero recomendado)
+## 2. Verificar GPU Vulkan (recomendado)
+
+Hay que comprobar dos cosas: que existe el dispositivo Vulkan (driver) **y**
+que ggml tiene su backend Vulkan instalado.
 
 ```bash
+# Dispositivo Vulkan real (driver)
 vulkaninfo --summary | grep -A3 "GPU[0-9]"
+
+# Backend Vulkan de ggml (lo que usa whisper para ir por GPU)
+ls -l /usr/lib/ggml/libggml-vulkan.so
 ```
 
-Debe listar la GPU real (p. ej. AMD RX 5600 XT). Sin dispositivo Vulkan,
-whisper-cli cae a CPU y el dictado va notablemente más lento.
+Sin dispositivo Vulkan **o** sin `libggml-vulkan.so`, `whisper-cli` cae a CPU
+y el dictado va notablemente más lento. Para confirmar qué backend usa:
+
+```bash
+whisper-cli -m ~/.local/share/dictation/models/ggml-large-v3-turbo-q5_0.bin \
+  -l es -t 4 -f /tmp/opencode/whisper-test.wav 2>&1 | head -8
+```
+
+Debe aparecer `loaded Vulkan backend from /usr/lib/ggml/libggml-vulkan.so` y
+`using Vulkan0 backend`; si dice `loaded CPU backend` / `no GPU found`, sigue
+en CPU.
 
 ## 3. Descargar el modelo
 
@@ -90,11 +106,12 @@ Quickshell, no de instalación.
 - **`whisper-cli` crashea (abort) al transcribir**: suele verse en gdb como
   `ggml_backend_dev_backend_reg` → `ggml_abort`, y al ejecutar `whisper-cli`
   a mano sale repetido `ggml_backend_load_best: search path /usr/lib/ggml does
-  not exist`. Es que falta el backend: instala `ggml-cpu` (y `ggml-vulkan` para
-  GPU) — ver nota de la sección 1.
-- **El dictado va lento / cae a CPU**: verificar GPU Vulkan con
-  `vulkaninfo --summary | grep -A3 "GPU[0-9]"`; sin dispositivo Vulkan,
-  `whisper-cli` usa CPU y tarda bastante más.
+  not exist`. Es que falta el backend: reinstala `ggml` (trae el CPU) y
+  `ggml-vulkan` para GPU — ver nota de la sección 1.
+- **El dictado va lento / cae a CPU**: verifica las dos piezas:
+  `vulkaninfo --summary | grep -A3 "GPU[0-9]"` (dispositivo/driver) y
+  `ls -l /usr/lib/ggml/libggml-vulkan.so` (backend de ggml). Si falta
+  cualquiera de las dos, `whisper-cli` usa CPU y tarda bastante más.
 
 ## Notas
 
